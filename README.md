@@ -2,7 +2,7 @@
 
 ## About this Fork
 
-This flog Fork is for testing and benchmarking the Datadog agent's logs agent. Any modificaitons made to this for are to better fit our testing and performance scenarios. 
+This Flog fork is for testing and benchmarking the Datadog agent's logs agent. Any modificaitons made to this fork are to better fit our testing and performance scenarios. 
 
 [![go report card](https://goreportcard.com/badge/github.com/mingrammer/flog)](https://goreportcard.com/report/github.com/mingrammer/flog) [![travis ci](https://travis-ci.com/mingrammer/flog.svg?branch=master)](https://travis-ci.com/mingrammer/flog) [![docker download](https://img.shields.io/docker/pulls/mingrammer/flog.svg)](https://hub.docker.com/r/mingrammer/flog)
 
