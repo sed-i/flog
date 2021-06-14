@@ -20,8 +20,9 @@ Version: %s
 
 Options:
   -f, --format string      log format. available formats:
-                           - apache_common (default)
-                           - apache_combined
+						   - app_log (default)
+                           - apache_common 
+                           - apache_combine
                            - apache_error
                            - rfc3164
                            - rfc5424
@@ -32,8 +33,7 @@ Options:
                            - log
                            - gz
   -n, --number integer     number of lines to generate.
-  -b, --bytes integer      size of logs to generate (in bytes).
-                           "bytes" will be ignored when "number" is set.
+  -b, --bytes integer      length of each log line in bytes (default 512)
   -s, --sleep duration     fix creation time interval for each log (default unit "seconds"). It does not actually sleep.
                            examples: 10, 20ms, 5s, 1m
   -r, --rate rate          # of logs per second
@@ -45,7 +45,7 @@ Options:
   -l, --loop               loop output forever until killed.
 `
 
-var validFormats = []string{"apache_common", "apache_combined", "apache_error", "rfc3164", "rfc5424", "common_log", "json"}
+var validFormats = []string{"app_log", "apache_common", "apache_combined", "apache_error", "rfc3164", "rfc5424", "common_log", "json"}
 var validTypes = []string{"stdout", "log", "gz"}
 
 // Option defines log generator options
@@ -81,11 +81,11 @@ func errorExit(err error) {
 
 func defaultOptions() *Option {
 	return &Option{
-		Format:    "apache_common",
+		Format:    "app_log",
 		Output:    "generated.log",
 		Type:      "stdout",
 		Number:    1000,
-		Bytes:     0,
+		Bytes:     512,
 		Sleep:     0.0,
 		Rate:      100,
 		SplitBy:   0,
