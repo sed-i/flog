@@ -31,11 +31,17 @@ func Generate(option *Option) error {
 		return err
 	}
 
+	var counter uint64 = 0
+
 	if option.Forever {
 		for {
 			start := time.Now()
 			for i := 0; i < option.Rate; i++ {
 				log := NewLog(option.Format, created, option.Bytes)
+				if option.Seq {
+					counter++
+					log = writeSeq(counter, log)
+				}
 				_, _ = writer.Write([]byte(log + "\n"))
 				created = created.Add(interval)
 			}
@@ -143,4 +149,9 @@ func NewSplitFileName(path string, count int) string {
 	logFileNameExt := filepath.Ext(path)
 	pathWithoutExt := strings.TrimSuffix(path, logFileNameExt)
 	return pathWithoutExt + strconv.Itoa(count) + logFileNameExt
+}
+
+func writeSeq(counter uint64, log string) string {
+	seq := fmt.Sprintf(" log_seq:%d", counter)
+	return log[:len(log)-len(seq)] + seq
 }

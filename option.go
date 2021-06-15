@@ -32,6 +32,7 @@ Options:
                            - stdout (default)
                            - log
                            - gz
+  -q  --seq integer        add sequence number to logs (only when using -l)
   -n, --number integer     number of lines to generate.
   -b, --bytes integer      length of each log line in bytes (default 512)
   -s, --sleep duration     fix creation time interval for each log (default unit "seconds"). It does not actually sleep.
@@ -60,6 +61,7 @@ type Option struct {
 	SplitBy   int
 	Overwrite bool
 	Forever   bool
+	Seq       bool
 }
 
 func init() {
@@ -91,6 +93,7 @@ func defaultOptions() *Option {
 		SplitBy:   0,
 		Overwrite: false,
 		Forever:   false,
+		Seq:       false,
 	}
 }
 
@@ -169,6 +172,7 @@ func ParseOptions() *Option {
 	logType := pflag.StringP("type", "t", opts.Type, "Log output type")
 	number := pflag.IntP("number", "n", opts.Number, "Number of lines to generate")
 	bytes := pflag.IntP("bytes", "b", opts.Bytes, "Size of logs to generate. (in bytes)")
+	seq := pflag.BoolP("seq", "q", false, "Add sequence numbers")
 	sleepString := pflag.StringP("sleep", "s", "0s", "Creation time interval (default unit: seconds)")
 	rate := pflag.IntP("rate", "r", opts.Number, "Logs per second")
 	splitBy := pflag.IntP("split", "p", opts.SplitBy, "Maximum number of lines or size of a log file")
@@ -209,5 +213,6 @@ func ParseOptions() *Option {
 	opts.Output = *output
 	opts.Overwrite = *overwrite
 	opts.Forever = *forever
+	opts.Seq = *seq
 	return opts
 }
