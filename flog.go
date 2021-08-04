@@ -34,9 +34,11 @@ func Generate(option *Option) error {
 	var counter uint64 = 0
 
 	if option.Forever {
+		rate := option.Rate
 		for {
+			rate += option.Increment
 			start := time.Now()
-			for i := 0; i < option.Rate; i++ {
+			for i := 0; i < rate; i++ {
 				log := NewLog(option.Format, created, option.Bytes)
 				if option.Seq {
 					counter++

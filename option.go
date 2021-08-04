@@ -61,6 +61,7 @@ type Option struct {
 	SplitBy   int
 	Overwrite bool
 	Forever   bool
+	Increment int
 	Seq       bool
 }
 
@@ -93,6 +94,7 @@ func defaultOptions() *Option {
 		SplitBy:   0,
 		Overwrite: false,
 		Forever:   false,
+		Increment: 0,
 		Seq:       false,
 	}
 }
@@ -178,6 +180,7 @@ func ParseOptions() *Option {
 	splitBy := pflag.IntP("split", "p", opts.SplitBy, "Maximum number of lines or size of a log file")
 	overwrite := pflag.BoolP("overwrite", "w", false, "Overwrite the existing log files")
 	forever := pflag.BoolP("loop", "l", false, "Loop output forever until killed")
+	increment := pflag.IntP("increment", "i", opts.Increment, "How many more logs to send each iteration")
 
 	pflag.Parse()
 
@@ -208,6 +211,9 @@ func ParseOptions() *Option {
 		errorExit(err)
 	}
 	if opts.SplitBy, err = ParseSplitBy(*splitBy); err != nil {
+		errorExit(err)
+	}
+	if opts.Increment, err = ParseNumber(*increment); err != nil {
 		errorExit(err)
 	}
 	opts.Output = *output
