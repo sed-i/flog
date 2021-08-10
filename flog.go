@@ -40,12 +40,15 @@ func Generate(option *Option) error {
 			start := time.Now()
 			for i := 0; i < rate; i++ {
 				log := NewLog(option.Format, created, option.Bytes)
+				counter++
 				if option.Seq {
-					counter++
 					log = writeSeq(counter, log)
 				}
 				_, _ = writer.Write([]byte(log + "\n"))
 				created = created.Add(interval)
+			}
+			if option.Rotate > 0 && counter%uint64(option.Rotate) == 0 {
+				writer, _ = RotateFile(writer, logFileName)
 			}
 			elapsed := time.Since(start)
 			time.Sleep(time.Second - elapsed)
@@ -98,6 +101,16 @@ func Generate(option *Option) error {
 		fmt.Println(logFileName, "is created.")
 	}
 	return nil
+}
+
+func RotateFile(currentWriter io.WriteCloser, logFileName string) (io.WriteCloser, error) {
+	err := currentWriter.Close()
+	if err != nil {
+		return nil, err
+	}
+	os.Remove(logFileName + ".1")
+	os.Rename(logFileName, logFileName+".1")
+	return NewWriter("log", logFileName)
 }
 
 // NewWriter returns a closeable writer corresponding to given log type

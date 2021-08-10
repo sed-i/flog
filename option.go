@@ -44,6 +44,7 @@ Options:
                            with "byte" option, the logs will be split whenever the maximum size in bytes is reached.
   -w, --overwrite          overwrite the existing log files.
   -l, --loop               loop output forever until killed.
+  -a  --rotate             rotate log after x logs (only in log mode)
 `
 
 var validFormats = []string{"app_log", "apache_common", "apache_combined", "apache_error", "rfc3164", "rfc5424", "common_log", "json"}
@@ -63,6 +64,7 @@ type Option struct {
 	Forever   bool
 	Increment int
 	Seq       bool
+	Rotate    int
 }
 
 func init() {
@@ -96,6 +98,7 @@ func defaultOptions() *Option {
 		Forever:   false,
 		Increment: 0,
 		Seq:       false,
+		Rotate:    0,
 	}
 }
 
@@ -181,6 +184,7 @@ func ParseOptions() *Option {
 	overwrite := pflag.BoolP("overwrite", "w", false, "Overwrite the existing log files")
 	forever := pflag.BoolP("loop", "l", false, "Loop output forever until killed")
 	increment := pflag.IntP("increment", "i", opts.Increment, "How many more logs to send each iteration")
+	rotate := pflag.IntP("rotate", "a", opts.Rotate, "when to rotate log file")
 
 	pflag.Parse()
 
@@ -214,6 +218,9 @@ func ParseOptions() *Option {
 		errorExit(err)
 	}
 	if opts.Increment, err = ParseNumber(*increment); err != nil {
+		errorExit(err)
+	}
+	if opts.Rotate, err = ParseNumber(*rotate); err != nil {
 		errorExit(err)
 	}
 	opts.Output = *output
