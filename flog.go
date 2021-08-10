@@ -46,9 +46,9 @@ func Generate(option *Option) error {
 				}
 				_, _ = writer.Write([]byte(log + "\n"))
 				created = created.Add(interval)
-			}
-			if option.Rotate > 0 && counter%uint64(option.Rotate) == 0 {
-				writer, _ = RotateFile(writer, logFileName)
+				if option.Rotate > 0 && counter%uint64(option.Rotate) == 0 {
+					writer, _ = RotateFile(writer, logFileName)
+				}
 			}
 			elapsed := time.Since(start)
 			time.Sleep(time.Second - elapsed)
