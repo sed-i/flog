@@ -11,6 +11,8 @@ import (
 	"time"
 )
 
+var id = time.Now().UnixNano()
+
 // Generate generates the logs with given options
 func Generate(option *Option) error {
 	var (
@@ -167,6 +169,6 @@ func NewSplitFileName(path string, count int) string {
 }
 
 func writeSeq(counter uint64, log string) string {
-	seq := fmt.Sprintf(" log_seq:%d", counter)
+	seq := fmt.Sprintf(" log_seq:%d:%d", id, counter)
 	return log[:len(log)-len(seq)] + seq
 }
