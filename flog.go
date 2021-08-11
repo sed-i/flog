@@ -4,6 +4,7 @@ import (
 	"compress/gzip"
 	"fmt"
 	"io"
+	"math/rand"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -23,9 +24,13 @@ func Generate(option *Option) error {
 		delay    time.Duration
 	)
 
+	buildCache(option.Bytes)
+
 	if option.Sleep > 0 {
 		interval = option.Sleep
 	}
+
+	rand.Seed(time.Now().UnixNano())
 
 	logFileName := option.Output
 	writer, err := NewWriter(option.Type, logFileName)

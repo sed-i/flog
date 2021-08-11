@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"strings"
 	"time"
 
@@ -32,6 +33,19 @@ const (
 	JSONLogFormat = `{"host":"%s", "user-identifier":"%s", "datetime":"%s", "method": "%s", "request": "%s", "protocol":"%s", "status":%d, "bytes":%d, "referer": "%s", "message": "`
 )
 
+var cacheSize = 10000
+var cache = []string{}
+
+func buildCache(length int) {
+	for i := 0; i < cacheSize; i++ {
+		msg := gofakeit.Word()
+		for len(msg) <= length {
+			msg = msg + " " + gofakeit.Word()
+		}
+		cache = append(cache, msg[:length-1])
+	}
+}
+
 func message(length int) string {
 	if length < 1 {
 		return ""
@@ -53,7 +67,8 @@ func NewAppLog(t time.Time, length int) string {
 		RandResourceURI(),
 		gofakeit.Number(1, 999),
 	)
-	return preMsg + message(length-len(preMsg))
+	msg := cache[rand.Intn(cacheSize)]
+	return preMsg + msg[:length-len(preMsg)]
 }
 
 // NewApacheCommonLog creates a log string with apache common log format
@@ -100,7 +115,8 @@ func NewApacheErrorLog(t time.Time, length int) string {
 		gofakeit.IPv4Address(),
 		gofakeit.Number(1, 65535),
 	)
-	return preMsg + message(length-len(preMsg))
+	msg := cache[rand.Intn(cacheSize)]
+	return preMsg + msg[:length-len(preMsg)]
 }
 
 // NewRFC3164Log creates a log string with syslog (RFC3164) format
@@ -113,7 +129,8 @@ func NewRFC3164Log(t time.Time, length int) string {
 		gofakeit.Word(),
 		gofakeit.Number(1, 10000),
 	)
-	return preMsg + message(length-len(preMsg))
+	msg := cache[rand.Intn(cacheSize)]
+	return preMsg + msg[:length-len(preMsg)]
 }
 
 // NewRFC5424Log creates a log string with syslog (RFC5424) format
@@ -129,7 +146,8 @@ func NewRFC5424Log(t time.Time, length int) string {
 		gofakeit.Number(1, 1000),
 		"-", // TODO: structured data
 	)
-	return preMsg + message(length-len(preMsg))
+	msg := cache[rand.Intn(cacheSize)]
+	return preMsg + msg[:length-len(preMsg)]
 }
 
 // NewCommonLogFormat creates a log string with common log format
