@@ -1,9 +1,5 @@
 # Flog
 
-## About this Fork
-
-This Flog fork is for testing and benchmarking the Datadog agent's logs agent. Any modificaitons made to this fork are to better fit our testing and performance scenarios. 
-
 [![go report card](https://goreportcard.com/badge/github.com/mingrammer/flog)](https://goreportcard.com/report/github.com/mingrammer/flog) [![travis ci](https://travis-ci.com/mingrammer/flog.svg?branch=master)](https://travis-ci.com/mingrammer/flog) [![docker download](https://img.shields.io/docker/pulls/mingrammer/flog.svg)](https://hub.docker.com/r/mingrammer/flog)
 
 flog is a fake log generator for common log formats such as apache-common, apache error and RFC3164 syslog.
@@ -11,6 +7,14 @@ flog is a fake log generator for common log formats such as apache-common, apach
 It is useful for testing some tasks which require log data like amazon kinesis log stream test.
 
 > Thanks to [gofakeit](https://github.com/brianvoe/gofakeit) 😘
+
+
+## About this Fork
+This Flog fork (forked from DataDog, forked from mingrammer) uses `FROM ubuntu` instead of `FROM scratch` to have some tooling.
+
+### About this fork (DataDog)
+This Flog fork is for testing and benchmarking the Datadog agent's logs agent. Any modificaitons made to this fork are to better fit our testing and performance scenarios. 
+
 
 ## Installation
 
