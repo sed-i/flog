@@ -44,6 +44,7 @@ Options:
                            with "byte" option, the logs will be split whenever the maximum size in bytes is reached.
   -w, --overwrite          overwrite the existing log files.
   -l, --loop               loop output forever until killed.
+  -i, --increment          how many more logs to send each iteration
   -a  --rotate             rotate log after x logs (only in log mode)
 `
 
