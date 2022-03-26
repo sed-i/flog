@@ -11,6 +11,6 @@ RUN go mod download
 COPY . ./
 RUN go build -o /bin/flog
 
-FROM busybox
+FROM ubuntu
 COPY --from=0 /bin/flog /bin/flog
 ENTRYPOINT ["flog"]
