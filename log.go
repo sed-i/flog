@@ -30,7 +30,7 @@ const (
 	CommonLogFormat = "%s - %s [%s] \"%s %s %s\" %d %d"
 	// JSONLogFormat : {"host": "{host}", "user-identifier": "{user-identifier}", "datetime": "{datetime}", "method": "{method}", "request": "{request}", "protocol": "{protocol}", "status", {status}, "bytes": {bytes}, "referer": "{referer}", "message": "
 	// message is appened
-	JSONLogFormat = `{"host":"%s", "user-identifier":"%s", "datetime":"%s", "method": "%s", "request": "%s", "protocol":"%s", "status":%d, "bytes":%d, "referer": "%s", "message": "`
+	JSONLogFormat = `{"level":"%s", "host":"%s", "user-identifier":"%s", "datetime":"%s", "method": "%s", "request": "%s", "protocol":"%s", "status":%d, "bytes":%d, "referer": "%s", "message": "`
 )
 
 var cacheSize = 10000
@@ -169,6 +169,7 @@ func NewCommonLogFormat(t time.Time) string {
 func NewJSONLogFormat(t time.Time, length int) string {
 	preMsg := fmt.Sprintf(
 		JSONLogFormat,
+		strings.ToUpper(gofakeit.LogLevel("general")),
 		gofakeit.IPv4Address(),
 		RandAuthUserID(),
 		t.Format(CommonLog),
